@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affan Ashraf | Project Gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #020617; overflow-x: hidden; }
+
+        /* BACK BUTTON */
+        .back-btn { position: fixed; top: 25px; left: 25px; z-index: 100; padding: 10px 25px; background: rgba(0,0,0,0.6); color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; backdrop-filter: blur(8px); transition: 0.3s; font-weight: 500; letter-spacing: 0.5px; }
+        .back-btn:hover { background: white; color: black; transform: translateX(5px); }
+
+        /* 3D CONTAINER */
+        .project-slide { position: relative; height: 100vh; display: flex; justify-content: center; align-items: center; perspective: 1500px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* CURTAIN ANIMATION */
+        .curtain-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; transform-style: preserve-3d; transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1); opacity: 0; }
+
+        /* CONTENT LAYOUT */
+        .slide-content { position: relative; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 60px; max-width: 1200px; width: 90%; color: white; opacity: 0; transform: translateZ(50px); transition: opacity 1.5s ease 1.0s, transform 1.5s ease 1.0s; }
+        .text-container { text-align: left; max-width: 550px; }
+        .text-container h2 { font-size: 3.5rem; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; text-shadow: 0 10px 30px rgba(0,0,0,0.3); line-height: 1.1; }
+        .text-container p { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.6; color: #e2e8f0; font-weight: 300; }
+        .tags-container { display: flex; gap: 10px; flex-wrap: wrap;}
+        .tag { padding: 8px 18px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; font-size: 0.9rem; backdrop-filter: blur(5px); }
+
+        /* --- TRUE 3D IPHONE MOCKUP --- */
+        .phone-mockup {
+            width: 300px; height: 600px; border-radius: 50px; position: relative; transform-style: preserve-3d;
+            background: #000; box-shadow: inset 0 0 0 2px #333, inset 0 0 0 6px #1a1a1a, 0 0 0 1px #000; padding: 10px; 
+            opacity: 0; transform: translateY(100px) rotateX(30deg) rotateY(40deg) rotateZ(-10deg);
+            transition: all 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1.3s;
+        }
+
+        /* THICKNESS LAYER */
+        .phone-mockup::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50px; background: #1a1a1a; transform: translateZ(-14px);
+            box-shadow: 0 0 0 2px #0d0d0d, 0 0 0 5px #262626, 0 0 0 7px #0d0d0d, 0px 40px 70px rgba(0,0,0,0.6), 20px 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Screen & Details */
+        .phone-screen { width: 100%; height: 100%; background: #fff; border-radius: 40px; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #333; box-shadow: inset 0 0 20px rgba(255,255,255,0.2); transform: translateZ(1px); }
+        .phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%) translateZ(2px); width: 120px; height: 30px; background: #000; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
+        .phone-notch::before { content: ''; position: absolute; top: 50%; transform: translateY(-50%); background: #1a1a1a; border-radius: 50%; left: 30%; width: 8px; height: 8px; } 
+        .phone-notch::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); background: #222; border: 1px solid #0d0d0d; border-radius: 50%; right: 30%; width: 10px; height: 10px; }
+        .phone-mockup::after { content: ''; position: absolute; right: -6px; top: 150px; width: 4px; height: 80px; background: #1a1a1a; border-radius: 2px; transform: translateZ(-7px); box-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
+
+        /* --- APP SCREENS --- */
+        .screen-budgetify { background: linear-gradient(to bottom, #ecfdf5, #d1fae5); color: #065f46; }
+        .screen-sentinel { background: linear-gradient(to bottom, #18181b, #27272a); color: #ef4444; }
+        .screen-present { background: linear-gradient(to bottom, #eff6ff, #dbeafe); color: #1e40af; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 968px) {
+            .slide-content { flex-direction: column-reverse; text-align: center; gap: 40px; }
+            .text-container { text-align: center; }
+            .tags-container { justify-content: center; }
+            .phone-mockup { width: 240px; height: 480px; }
+            .text-container h2 { font-size: 2.5rem; }
+        }
+
+        /* --- THEMES --- */
+        .slide-budgetify .curtain-panel { transform-origin: left; transform: rotateY(-90deg) translateX(-50%); background: linear-gradient(135deg, #115e59, #0f766e, #134e4a); }
+        .slide-sentinel .curtain-panel { transform-origin: right; transform: rotateY(90deg) translateX(50%); background: linear-gradient(135deg, #450a0a, #7f1d1d, #991b1b); }
+        .slide-present .curtain-panel { transform-origin: left; transform: rotateY(-90deg) translateX(-50%); background: linear-gradient(135deg, #172554, #1e3a8a, #1e40af); }
+
+        /* ACTIVE STATES */
+        .project-slide.active .curtain-panel { opacity: 1; transform: rotateY(0deg); }
+        .project-slide.active .slide-content { opacity: 1; transform: translateZ(50px); }
+        .project-slide.active .phone-mockup { opacity: 1; transform: translateY(0) rotateX(20deg) rotateY(-30deg) rotateZ(10deg); }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">&larr; Back to Home</a>
+
+    <section class="project-slide slide-budgetify">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+            <div class="text-container">
+                <h2>Budgetify</h2>
+                <p>A comprehensive expense tracking application. Features real-time budget management, statistical graphs, and local database integration.</p>
+                <div class="tags-container"><span class="tag">Android Studio</span> <span class="tag">Kotlin</span> <span class="tag">Room DB</span></div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-budgetify">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Budgetify</h3>
+                    <div style="font-size: 2rem; font-weight: bold;">$1,250.00</div>
+                    <div style="font-size: 0.9rem; opacity: 0.7;">Balance</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-slide slide-sentinel">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+             <div class="text-container">
+                <h2>Sentinel AI</h2>
+                <p>Advanced emotion recognition system. Detects facial expressions and analyzes emotional states using computer vision and deep learning.</p>
+                <div class="tags-container"><span class="tag">AI / ML</span> <span class="tag">Python</span> <span class="tag">Computer Vision</span></div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-sentinel">
+                     <div style="width: 100px; height: 100px; border: 3px solid #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">Scanning...</div>
+                    <h3 style="color: #ef4444;">Emotion Detected</h3>
+                    <div style="font-size: 1.5rem;">"Neutral"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-slide slide-present">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+             <div class="text-container">
+                <h2>Present Face</h2>
+                <p>Automated attendance system for universities. Uses facial recognition to mark presence instantly and securely.</p>
+                <div class="tags-container"><span class="tag">Biometrics</span> <span class="tag">Automation</span> <span class="tag">Mobile Dev</span></div>
+            </div>
+             <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-present">
+                     <div style="font-size: 3rem; color: #22c55e; margin-bottom: 10px;">✓</div>
+                    <h3 style="font-size: 1.5rem;">Attendance Marked</h3>
+                    <div style="font-size: 1rem; opacity: 0.8;">Affan Ashraf - 09:02 AM</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('active'); }
+                else { entry.target.classList.remove('active'); }
+            });
+        }, { threshold: 0.35 });
+        document.querySelectorAll('.project-slide').forEach(s => observer.observe(s));
+    </script>
+</body>
+</html>
