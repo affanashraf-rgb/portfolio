@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Affan Ashraf | CS Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
@@ -26,7 +26,8 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.7;
-            overflow-x: hidden; /* Hide horizontal scroll */
+            overflow-x: hidden; /* Critical for mobile */
+            width: 100%;
         }
 
         /* --- PRELOADER --- */
@@ -39,6 +40,7 @@
         .loader-text {
             font-family: 'Courier New', monospace; font-size: 1.2rem; color: var(--accent-cyan);
             margin-bottom: 20px; letter-spacing: 2px; animation: blink 1s infinite;
+            text-align: center; padding: 0 20px;
         }
         .loader-bar {
             width: 200px; height: 2px; background: rgba(255,255,255,0.1); overflow: hidden; position: relative;
@@ -92,6 +94,7 @@
         body:has(a:hover, button:hover, .service-card:hover, .gateway-card:hover, input:hover, textarea:hover) .cursor-outline {
             width: 60px; height: 60px; background-color: rgba(34, 211, 238, 0.1); border-color: transparent;
         }
+        /* Hide cursor on mobile touch devices */
         @media (max-width: 768px) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
 
         /* --- TYPOGRAPHY --- */
@@ -117,7 +120,6 @@
         .btn-primary { background: linear-gradient(135deg, var(--accent-cyan), #0891b2); color: #000; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(34, 211, 238, 0.5); }
         
-        /* Shimmer Effect */
         .btn-primary { position: relative; overflow: hidden; }
         .btn-primary::after {
             content: ""; position: absolute; inset: 0;
@@ -132,7 +134,7 @@
 
         .hero-buttons { margin-top: 40px; display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
 
-        /* --- NAVIGATION (FULL WIDTH) --- */
+        /* --- NAVIGATION --- */
         nav { 
             padding: 25px 0; 
             background: rgba(2, 6, 23, 0.85); 
@@ -293,14 +295,14 @@
         footer { border-top: 1px solid rgba(255,255,255,0.05); text-align: center; padding: 40px 0; margin-top: 80px; font-size: 0.9rem; color: var(--text-muted); }
 
         /* ========================================= */
-        /* --- MOBILE RESPONSIVE FIXES --- */
+        /* --- MOBILE RESPONSIVE FIXES (UPDATED) --- */
         /* ========================================= */
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; margin-bottom: 15px; } 
             h2 { font-size: 1.8rem; }
             .section-padding { padding: 60px 0; }
             
-            /* Nav Mobile Adjustments */
+            /* Nav Mobile Adjustments - Stack and Pad */
             .nav-full-width { flex-direction: column; gap: 15px; padding: 0 20px; }
             .nav-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
             .nav-links a { margin: 0 8px; font-size: 0.9rem; }
@@ -321,6 +323,12 @@
             .gateway-card h3 { font-size: 1.8rem; }
             
             .contact-box { padding: 25px; }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .nav-full-width { padding: 0 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
