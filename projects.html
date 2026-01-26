@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affan Ashraf | Project Gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #020617; overflow-x: hidden; color: #e5e7eb; }
+
+        /* AMBIENT BACKGROUND */
+        .bg-blobs { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+        .blob {
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            mix-blend-mode: screen;
+            transform: translate3d(0,0,0);
+            animation: blobFloat 20s ease-in-out infinite;
+        }
+        .blob-1 { left: -160px; top: -140px; background: radial-gradient(circle at 40% 30%, #22d3ee, transparent 60%); }
+        .blob-2 { right: -200px; top: 120px; background: radial-gradient(circle at 50% 40%, #c084fc, transparent 60%); animation-duration: 24s; }
+        .blob-3 { left: 20%; bottom: -220px; background: radial-gradient(circle at 40% 30%, #38bdf8, transparent 60%); animation-duration: 26s; }
+        @keyframes blobFloat {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, 20px) scale(1.05); }
+            66% { transform: translate(-25px, 35px) scale(0.97); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* BACK BUTTON + HEADER */
+        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 1000; padding: 10px 25px; background: rgba(0,0,0,0.8); color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; backdrop-filter: blur(8px); transition: 0.3s; font-weight: 500; letter-spacing: 0.5px; }
+        .back-btn:hover { background: white; color: black; transform: translateX(5px); }
+        .page-header {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 900;
+            text-align: right;
+            color: #e5e7eb;
+            pointer-events: none;
+        }
+        .page-title { font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; }
+        .page-hint { font-size: 0.8rem; opacity: 0.55; margin-top: 4px; }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e5e7eb;
+            font-size: 0.85rem;
+            opacity: 0.75;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            z-index: 800;
+            pointer-events: none;
+        }
+        .scroll-indicator span { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; }
+        .scroll-indicator svg {
+            width: 18px;
+            height: 24px;
+            stroke: #94a3b8;
+            stroke-width: 1.4;
+            fill: none;
+            animation: bounceScroll 1.4s ease-in-out infinite;
+        }
+        @keyframes bounceScroll {
+            0%,100% { transform: translateY(0); opacity: 0.9; }
+            50% { transform: translateY(6px); opacity: 0.5; }
+        }
+
+        /* 3D CONTAINER (Desktop Default) */
+        .project-slide { position: relative; height: 100vh; display: flex; justify-content: center; align-items: center; perspective: 1500px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* CURTAIN ANIMATION */
+        .curtain-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; transform-style: preserve-3d; transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1); opacity: 0; }
+
+        /* CONTENT LAYOUT */
+        .slide-content { position: relative; z-index: 5; display: flex; align-items: center; justify-content: center; gap: 60px; max-width: 1200px; width: 90%; color: white; opacity: 0; transform: translateZ(50px); transition: opacity 1.5s ease 1.0s, transform 1.5s ease 1.0s; }
+        .text-container { text-align: left; max-width: 560px; }
+        .text-container h2 { font-size: 3.2rem; margin-bottom: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.04em; text-shadow: 0 10px 30px rgba(0,0,0,0.35); line-height: 1.05; }
+        .project-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.16em; color: #9ca3af; margin-bottom: 12px; }
+        .project-meta span { opacity: 0.9; }
+        .text-container p { font-size: 1.05rem; margin-bottom: 10px; line-height: 1.7; color: #e2e8f0; font-weight: 300; }
+        .feature-list { margin: 12px 0 22px; padding-left: 1.1rem; font-size: 0.95rem; color: #cbd5f5; }
+        .feature-list li { margin-bottom: 6px; }
+        .feature-list li::marker { color: #22d3ee; }
+        .tags-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .tag {
+            padding: 7px 16px;
+            background: rgba(15,23,42,0.75);
+            border: 1px solid rgba(148,163,184,0.6);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(8px);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+        .tag::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #22d3ee;
+        }
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15,23,42,0.8);
+            border-color: rgba(56,189,248,0.8);
+            background: rgba(15,23,42,0.95);
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.7);
+            background: rgba(15,23,42,0.8);
+            color: #e5e7eb;
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .cta-btn span.icon { font-size: 1rem; }
+        .cta-btn.primary {
+            border-color: rgba(56,189,248,0.8);
+            background: linear-gradient(120deg, rgba(56,189,248,0.25), rgba(15,23,42,0.9));
+        }
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.9);
+            border-color: rgba(59,130,246,0.9);
+        }
+
+        /* --- PHONE MOCKUP --- */
+        .phone-mockup {
+            width: 300px; height: 600px; border-radius: 50px; position: relative; transform-style: preserve-3d;
+            background: #000; box-shadow: inset 0 0 0 2px #333, inset 0 0 0 6px #1a1a1a, 0 0 0 1px #000; padding: 10px; 
+            opacity: 0; transform: translateY(100px) rotateX(30deg) rotateY(40deg) rotateZ(-10deg);
+            transition: all 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1.3s;
+        }
+
+        /* THICKNESS LAYER */
+        .phone-mockup::before {
+            content: ''; position: absolute; inset: 0; border-radius: 50px; background: #1a1a1a; transform: translateZ(-14px);
+            box-shadow: 0 0 0 2px #0d0d0d, 0 0 0 5px #262626, 0 0 0 7px #0d0d0d, 0px 40px 70px rgba(0,0,0,0.6), 20px 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen { width: 100%; height: 100%; background: #fff; border-radius: 40px; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #333; box-shadow: inset 0 0 20px rgba(255,255,255,0.2); transform: translateZ(1px); }
+        .phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%) translateZ(2px); width: 120px; height: 30px; background: #000; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
+        .phone-mockup::after { content: ''; position: absolute; right: -6px; top: 150px; width: 4px; height: 80px; background: #1a1a1a; border-radius: 2px; transform: translateZ(-7px); box-shadow: 1px 1px 3px rgba(0,0,0,0.6); }
+
+        /* SCREENS */
+        .screen-budgetify { background: linear-gradient(to bottom, #ecfdf5, #d1fae5); color: #065f46; }
+        .screen-sentinel { background: linear-gradient(to bottom, #18181b, #27272a); color: #ef4444; }
+        .screen-present { background: linear-gradient(to bottom, #eff6ff, #dbeafe); color: #1e40af; }
+
+        .phone-mockup:hover {
+            transform: translateY(-10px) rotateX(16deg) rotateY(-24deg) rotateZ(8deg);
+            box-shadow: 0 40px 90px rgba(0,0,0,0.9);
+        }
+
+        /* --- THEMES --- */
+        .slide-budgetify .curtain-panel { transform-origin: left; transform: rotateY(-90deg) translateX(-50%); background: linear-gradient(135deg, #115e59, #0f766e, #134e4a); }
+        .slide-sentinel .curtain-panel { transform-origin: right; transform: rotateY(90deg) translateX(50%); background: linear-gradient(135deg, #450a0a, #7f1d1d, #991b1b); }
+        .slide-present .curtain-panel { transform-origin: left; transform: rotateY(-90deg) translateX(-50%); background: linear-gradient(135deg, #172554, #1e3a8a, #1e40af); }
+
+        /* ACTIVE STATES */
+        .project-slide.active .curtain-panel { opacity: 1; transform: rotateY(0deg); }
+        .project-slide.active .slide-content { opacity: 1; transform: translateZ(50px); }
+        .project-slide.active .phone-mockup { opacity: 1; transform: translateY(0) rotateX(20deg) rotateY(-30deg) rotateZ(10deg); }
+
+        /* ========================================= */
+        /* --- MOBILE RESPONSIVE FIXES (UPDATED) --- */
+        /* ========================================= */
+        @media (max-width: 968px) {
+            .project-slide {
+                /* FIX: Allow height to grow so content isn't cut off */
+                height: auto; 
+                min-height: 100vh; 
+                /* FIX: Add top padding so content starts BELOW the back button */
+                padding: 100px 0 60px; 
+                overflow: visible;
+            }
+
+            .slide-content { 
+                flex-direction: column; /* Stack vertically */
+                justify-content: flex-start;
+                text-align: center; 
+                gap: 40px; 
+            }
+
+            .text-container { 
+                text-align: center; 
+                max-width: 100%;
+                padding: 0 20px;
+            }
+
+            .text-container h2 { font-size: 2.5rem; margin-bottom: 10px; }
+            .text-container p { font-size: 1.1rem; margin-bottom: 20px; }
+            .tags-container { justify-content: center; }
+            
+            /* Phone Adjustments */
+            .phone-mockup { 
+                width: 240px; 
+                height: 480px; 
+                /* Simplify initial transform for mobile */
+                transform: scale(0.95) translateY(50px) rotateX(10deg);
+                margin-bottom: 20px;
+            }
+            
+            /* Active Phone Mobile */
+            .project-slide.active .phone-mockup {
+                transform: scale(0.95) rotateX(0deg);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * { scroll-behavior: auto !important; }
+            .blob, .phone-mockup, .curtain-panel, .project-slide.active .phone-mockup { animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blobs" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <a href="index.html" class="back-btn">&larr; Back to Home</a>
+    <div class="page-header">
+        <div class="page-title">Project Gallery</div>
+        <div class="page-hint">Scroll to step through case studies</div>
+    </div>
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <svg viewBox="0 0 20 30" aria-hidden="true">
+            <rect x="4" y="1" width="12" height="22" rx="6"></rect>
+            <circle cx="10" cy="7" r="2.2"></circle>
+        </svg>
+    </div>
+
+    <section class="project-slide slide-budgetify">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+            <div class="text-container">
+                <h2>Budgetify</h2>
+                <div class="project-meta">
+                    <span>Role — Android Developer</span>
+                    <span>Type — Personal Finance App</span>
+                    <span>Status — In Use</span>
+                </div>
+                <p>A comprehensive expense tracking experience focused on clarity and speed. Budgetify helps students and early professionals build a daily money habit.</p>
+                <ul class="feature-list">
+                    <li>Real-time budget progress with weekly and monthly breakdowns.</li>
+                    <li>Local persistence using Room DB for offline-first tracking.</li>
+                    <li>Category-based analytics with charts and spending insights.</li>
+                </ul>
+                <div class="tags-container">
+                    <span class="tag">Android Studio</span>
+                    <span class="tag">Kotlin</span>
+                    <span class="tag">Room DB</span>
+                    <span class="tag">MVVM</span>
+                </div>
+                <div class="cta-row">
+                    <a href="#" class="cta-btn primary"><span class="icon">👁️</span>View Screens</a>
+                    <a href="#" class="cta-btn"><span class="icon">📄</span>Read Case Study</a>
+                </div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-budgetify">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Budgetify</h3>
+                    <div style="font-size: 2rem; font-weight: bold;">$1,250.00</div>
+                    <div style="font-size: 0.9rem; opacity: 0.7;">Balance</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-slide slide-sentinel">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+             <div class="text-container">
+                <h2>Sentinel AI</h2>
+                <div class="project-meta">
+                    <span>Role — ML Engineer</span>
+                    <span>Type — Emotion Recognition Prototype</span>
+                    <span>Status — Research</span>
+                </div>
+                <p>Advanced emotion recognition system that reads facial expressions in real time. Designed as a foundation for safety, education, and well-being products.</p>
+                <ul class="feature-list">
+                    <li>Live webcam capture with face detection and tracking.</li>
+                    <li>CNN-based classifier for multi-class emotion prediction.</li>
+                    <li>Overlay UI that surfaces confidence scores and history.</li>
+                </ul>
+                <div class="tags-container">
+                    <span class="tag">AI / ML</span>
+                    <span class="tag">Python</span>
+                    <span class="tag">OpenCV</span>
+                    <span class="tag">Deep Learning</span>
+                </div>
+                <div class="cta-row">
+                    <a href="#" class="cta-btn primary"><span class="icon">▶</span>Demo Walkthrough</a>
+                    <a href="#" class="cta-btn"><span class="icon">🧠</span>Model Details</a>
+                </div>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-sentinel">
+                     <div style="width: 100px; height: 100px; border: 3px solid #ef4444; border-radius: 10px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">Scanning...</div>
+                    <h3 style="color: #ef4444;">Emotion Detected</h3>
+                    <div style="font-size: 1.5rem;">"Neutral"</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-slide slide-present">
+        <div class="curtain-panel"></div>
+        <div class="slide-content">
+             <div class="text-container">
+                <h2>Present Face</h2>
+                <div class="project-meta">
+                    <span>Role — Mobile & Backend</span>
+                    <span>Type — Attendance Automation</span>
+                    <span>Status — Prototype</span>
+                </div>
+                <p>Automated attendance system for classrooms that replaces manual calling of names with a fast, verifiable scan.</p>
+                <ul class="feature-list">
+                    <li>Face-based identity verification to prevent proxy attendance.</li>
+                    <li>Instant presence marking with timestamp and session ID.</li>
+                    <li>Exportable logs for teachers and administrators.</li>
+                </ul>
+                <div class="tags-container">
+                    <span class="tag">Biometrics</span>
+                    <span class="tag">Automation</span>
+                    <span class="tag">Mobile Dev</span>
+                    <span class="tag">Security</span>
+                </div>
+                <div class="cta-row">
+                    <a href="#" class="cta-btn primary"><span class="icon">📊</span>See Attendance Flow</a>
+                    <a href="#" class="cta-btn"><span class="icon">🔐</span>Security Notes</a>
+                </div>
+            </div>
+             <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-present">
+                     <div style="font-size: 3rem; color: #22c55e; margin-bottom: 10px;">✓</div>
+                    <h3 style="font-size: 1.5rem;">Attendance Marked</h3>
+                    <div style="font-size: 1rem; opacity: 0.8;">Affan Ashraf - 09:02 AM</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('active'); }
+                else { entry.target.classList.remove('active'); }
+            });
+        }, { threshold: 0.2 }); // Trigger slightly earlier on mobile
+        document.querySelectorAll('.project-slide').forEach(s => observer.observe(s));
+    </script>
+</body>
+</html>
