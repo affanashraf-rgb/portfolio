@@ -159,17 +159,6 @@
         }
         .nav-links a:hover::after { transform: scaleX(1); }
 
-        /* --- GITHUB STATS FIX --- */
-        /* New class to handle responsiveness */
-        .gh-card {
-            height: 180px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            /* Important: Scale down on small screens */
-            max-width: 100%;
-            width: auto;
-        }
-
         /* --- HERO SECTION --- */
         .hero { padding: 120px 0 80px; text-align: center; }
         .hero p { max-width: 700px; margin: 0 auto 40px; }
@@ -324,13 +313,6 @@
             .hero-buttons { flex-direction: column; gap: 20px; padding: 0 20px; }
             .btn { width: 100%; margin: 0; padding: 18px 0; }
 
-            /* Fix stats image responsiveness */
-            .gh-card {
-                height: auto; /* Allow height to adjust */
-                width: 100%;  /* Fill width */
-                max-width: 400px; /* Optional: limit max width on small tablets */
-            }
-
             .stats-bar { gap: 20px; padding: 20px; justify-content: center; }
             .stat-item { flex: 1 1 100%; margin-bottom: 10px; }
             .stat-num { font-size: 1.8rem; }
@@ -411,7 +393,7 @@
             
             <div class="hero-buttons reveal">
                 <a href="projects.html" class="btn btn-primary">View Interactive Gallery</a>
-                <a href="cv.pdf" class="btn btn-outline">Download CV</a>
+                <a href="Affan_Resume.pdf" target="_blank" class="btn btn-outline">View CV</a>
             </div>
 
             <div class="stats-bar reveal">
@@ -439,18 +421,6 @@
                     <span class="tech-pill"><img alt="Firebase" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg">Firebase</span>
                     <span class="tech-pill"><img alt="Git" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg">Git</span>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="padding: 60px 0; text-align: center;">
-        <div class="container">
-            <h2 class="reveal" style="margin-bottom: 40px;">Coding Activity</h2>
-            <div class="reveal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                <img src="https://github-readme-stats.vercel.app/api?username=affanashraf-rgb&show_icons=true&theme=tokyonight&bg_color=0f172a&hide_border=true" 
-                     alt="GitHub Stats" class="gh-card">
-                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=affanashraf-rgb&layout=compact&theme=tokyonight&bg_color=0f172a&hide_border=true" 
-                     alt="Top Languages" class="gh-card">
             </div>
         </div>
     </section>
